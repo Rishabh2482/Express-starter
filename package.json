@@ -1,0 +1,16 @@
+{
+  "name": "expressstarter",
+  "version": "1.0.0",
+  "description": "This is a expressstarter setup",
+  "main": "index.js",
+  "scripts": {
+    "start": "npx nodemon src/index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "nodemon": "^3.1.10"
+  }
+}
