@@ -15,21 +15,11 @@ app.use(express.urlencoded({ extended:true }));
 
 // Routing middleware
 //~  if your req route starts with /user then it will be handled by userRouter
-app.use('/user', userRouter);    // connectes the router to server
-app.use('carts', cartRouter);      
+app.use('/user', userRouter);    // connectes the router to server, setting the userRouter
+app.use('/carts', cartRouter);      //! connectes the router to server, setting the cartRouter
 app.listen(PORT,async ()=>{
     await connectDB();
     console.log(`Server is running on port ${serverConfig.PORT}`);
-
-    //         const newUser = await User.create({
-    //             firstName: 'Rishabh',
-    //             lastName: 'Kumar',
-    //             mobileNumber: '9134567890',
-    //             email: 'a@b.com',
-    //             password: '12345678'
-    //         });
-    //         console.log('User created successfully');
-    //         console.log(newUser);
 })
 
 
