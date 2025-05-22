@@ -1,8 +1,6 @@
 const User  = require('../schema/userSchema');
 
-class UserRepository{
-
-    async findUser(parameters){
+    async function findUser(parameters){
         try{
             const response = await User.findOne({...parameters})
             return response;
@@ -13,7 +11,7 @@ class UserRepository{
         
     }
 
-    async createUser(userDetails){
+    async function createUser(userDetails){
         try{
             const response =await User.create(userDetails);
             return response;
@@ -22,7 +20,10 @@ class UserRepository{
         }
 
     }
-}
 
-module.exports = UserRepository; // we are exporting the class not the object of class so we can create multiple objects of this class in the future if needed, whereas if we export the object then we can only create one object of this class.
+
+module.exports = {
+    findUser,
+    createUser
+}; // we are exporting the class not the object of class so we can create multiple objects of this class in the future if needed, whereas if we export the object then we can only create one object of this class.
 // 1. findUser - this function will find the user in the database and return the user object if found else it will return null

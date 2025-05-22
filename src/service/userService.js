@@ -1,16 +1,11 @@
-class UserService {
+const { findUser, createUser } = require("../repository/userRepository");
 
-    constructor(_userRepository){
-        // in the argument we will expect the userRepositoty object.
-        this.userRepository = _userRepository;
-    }
-
-    async registerUser(userDetails){
+async function registerUser(userDetails){
         console.log("Service layer called");
         //  it will create a brand new user in the db
 
         // 1. We need to check if the user with same email or phone number already exists or not
-        const user = await this.userRepository.findUser({
+        const user = await findUser({
             email: userDetails.email,
             mobileNumber: userDetails.mobileNumber
         })
@@ -21,7 +16,7 @@ class UserService {
         }
 
         // 2. If not exists, then create a new in the database
-        const newUser = await this.userRepository.createUser({
+        const newUser = await createUser({
             email: userDetails.email,
             mobileNumber: userDetails.mobileNumber,
             password: userDetails.password,
@@ -36,6 +31,5 @@ class UserService {
         // 3. Return the details of created user.
         return newUser;
     }
-}
 
-module.exports = UserService;
+module.exports = registerUser;

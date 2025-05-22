@@ -1,17 +1,11 @@
-const {modele} = require('mongoose');
-
-const UserRepository = require("../repository/userRepository");
-const UserService = require("../service/userService");
+const registerUser = require("../service/userService");
 
 async function createUser(req, res){
     console.log("Create user Controller called");
     console.log(req.body);
 
-    const userService = new UserService(new UserRepository());
-
     try{
-        // const response = await userService.createUser(req.body);  This was creating problem find out why.
-        const response = await userService.registerUser(req.body);    // This is fixed
+        const response = await registerUser(req.body); 
         return res.json({
             message: 'Successfully registered the user',
             sucess: true,
