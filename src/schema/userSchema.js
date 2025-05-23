@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 
 const userSchema = new mongoose.Schema({
     firstName:{
@@ -42,6 +43,12 @@ const userSchema = new mongoose.Schema({
     }
 },{
     timestamps: true, // this will create two fields in the database createdAt and updatedAt
+})
+
+userSchema.pre('save', async function(){
+    // here u can modify your user before it is saved in mongodb
+    const hashedPassword = await bcrypt.hash(this.password, 10); // this will hash the password before saving it to the database
+    this.password = hashedPassword; // this will set the password to the hashed password
 })
 
 const User = mongoose.model('User', userSchema);  // this will create a new collection in the database with the name 'users' and the schema will be userSchema. mongoose will automatically create a collection with the name 'users' in the database if it does not exist. if it exists, it will use the existing collection.
