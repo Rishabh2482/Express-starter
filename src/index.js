@@ -7,7 +7,9 @@ const userRouter = require('./routes/userRoute');
 const cartRouter = require('./routes/cartRoute');
 const authRouter = require('./routes/authRoute');
 const { isLoggedIn } = require('./validation/authValidator');
-
+const uploader = require('./middlewares/multerMiddlewares');
+const cloudinary = require('./config/cloudinaryConfig');
+const fs = require('fs');
 const PORT = serverConfig.PORT;
 const app = express();
 
@@ -26,6 +28,24 @@ app.get('/ping', isLoggedIn, (req, res)=>{ // This route is protected by the isL
     console.log(req.body);
     console.log(req.cookies);
     return res.json({message: "Pong"});
+})
+
+app.post('/photo',uploader.single('incomingfile') ,async(req, res) =>{
+    console.log(req.file); // req.file contains the file information uploaded by the user
+
+    const result = await cloudinary.uploader.upload(req.file.path); // Uploading the file to cloudinary
+    console.log("result from cloudinary",result);   // result contains the information about the uploaded file
+
+    fs.unlink(req.file.path, (err)=>{   // Deleting the file from the local storage after uploading it to cloudinary
+        if(err){
+            console.error("Error deleting file:", err);
+        }else{
+            console.log("File deleted successfully");
+        }
+    })
+
+    return res.json({           // Sending the response back to the client
+        message: "Photo uploaded successfully"})
 })
 
 app.listen(PORT,async ()=>{
