@@ -2,7 +2,7 @@ const multer =require('multer');
 const path = require('path');
 
 // multer is a middleware for handling multipart/form-data, which is used for uploading files.
-// The storageConfiguration is used to configure the storage location and filename for the uploaded files.
+// The storageConfiguration is used to configure the storage location and filename for the uploaded files.(Multer uses this configuration to store the files in the specified location with the specified filename format.)
 const storageConfiguration = multer.diskStorage({
     destination: (req, file, next)=>{
         next(null, 'uploads/')

@@ -10,6 +10,7 @@ const { isLoggedIn } = require('./validation/authValidator');
 const uploader = require('./middlewares/multerMiddlewares');
 const cloudinary = require('./config/cloudinaryConfig');
 const fs = require('fs');
+const productRouter = require('./routes/productRoute');
 const PORT = serverConfig.PORT;
 const app = express();
 
@@ -20,8 +21,9 @@ app.use(express.urlencoded({ extended:true }));
 
 //~ Routing middleware
 app.use('/user', userRouter);    //! connectes the router to server, setting the userRouter
-app.use('/carts', cartRouter);      //! connectes the router to server, setting the cartRouter
-app.use('/auth', authRouter);      //! connectes the router to server, setting the authRouter
+app.use('/carts', cartRouter);      //! setting the cartRouter
+app.use('/auth', authRouter);      //! setting the authRouter
+app.use('/products', productRouter);    //! setting the productRouter
 
 app.get('/ping', isLoggedIn, (req, res)=>{ // This route is protected by the isLoggedIn middleware, which checks if the user is authenticated before allowing access to this route.
     // controller
@@ -36,7 +38,7 @@ app.post('/photo',uploader.single('incomingfile') ,async(req, res) =>{
     const result = await cloudinary.uploader.upload(req.file.path); // Uploading the file to cloudinary
     console.log("result from cloudinary",result);   // result contains the information about the uploaded file
 
-    fs.unlink(req.file.path, (err)=>{   // Deleting the file from the local storage after uploading it to cloudinary
+    await fs.unlink(req.file.path, (err)=>{   // Deleting the file from the local storage after uploading it to cloudinary
         if(err){
             console.error("Error deleting file:", err);
         }else{
