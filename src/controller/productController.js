@@ -8,7 +8,7 @@ async function addProduct(req, res) {
         const product = await createProduct({       //! Why we are putting await here ?, because we are calling an async function in the service layer
         productName: req.body.productName,
         price: req.body.price,
-        imagePath: req.file.path,
+        imagePath: req.file?.path,                          //! This fix the error of imagePath being undefined if no file image is uploaded. '?' is optional chaining operator, it checks if req.file exists before accessing the path property.
         description: req.body.description,
         category: req.body.category,
         inStock: req.body.inStock
